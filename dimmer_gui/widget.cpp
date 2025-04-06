@@ -3,47 +3,47 @@
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
 {
-    resize(300, 300); //tamaño de la ventana de la app
-    setWindowTitle("LED dimmer"); //título de la ventana
+    resize(300, 300); //app window size
+    setWindowTitle("LED dimmer"); //window title
 
-    //config slider
+    //slider config
     sendSlider = new QSlider(Qt::Vertical, this); //slider
-    sendSlider->setRange(0, 255); //rango 0-255
-    sendSlider->setValue(0); //valor inicial = 0
-    sendSlider->setGeometry(100, 70, 90, 130); //posición en ventana
-    sendSlider->setTickPosition(QSlider::TicksLeft); //posición de ticks
-    sendSlider->setTickInterval(20); //intervalo de ticks
-    connect(sendSlider, &QSlider::valueChanged, this, &Widget::onSliderValueChanged); //conectar slider
+    sendSlider->setRange(0, 255); //range 0-255
+    sendSlider->setValue(0); //initial value = 0
+    sendSlider->setGeometry(100, 70, 90, 130); //position in window
+    sendSlider->setTickPosition(QSlider::TicksLeft); //tick position
+    sendSlider->setTickInterval(20); //tick interval
+    connect(sendSlider, &QSlider::valueChanged, this, &Widget::onSliderValueChanged); //connect slider
 
-    //config label de valor enviado a ESP32
-    sentValueLabel = new QLabel("Valor enviado: N/A", this);
+    //configure label of the value sent to the ESP32
+    sentValueLabel = new QLabel("Sent value: N/A", this);
     sentValueLabel->setGeometry(100, 200, 100, 100);
 
-    //config puerto serie
-    serial = new QSerialPort(this); //obj
-    serial->setPortName("COM3"); //nombre de puerto serie
-    serial->setBaudRate(QSerialPort::Baud9600); //baud com serial 9600 bits p/seg
+    //serial port config
+    serial = new QSerialPort(this); //object
+    serial->setPortName("COM3"); //serial port name
+    serial->setBaudRate(QSerialPort::Baud9600); //baud rate: 9600 bits per second
 
-    //rutina de apertura puerto serie
+    //serial port opening routine
     if (!serial->open(QIODeviceBase::ReadWrite))
     {
-        qDebug()<<"Error al abrir el puerto.";
+        qDebug()<<"Error opening the port.";
     }
 }
 
-Widget::~Widget() { //destructor de la ventana
-    if(serial->isOpen()){ //cerrar el puerto con la ventana
+Widget::~Widget() { //window destroyer
+    if(serial->isOpen()){ //close the serial port along with the window
         serial->close();
     }
 }
 
-void Widget::onSliderValueChanged(int value) //enviar valor del slider a la ESP32
+void Widget::onSliderValueChanged(int value) //send slider value to the ESP32
 {
-    //qDebug()<<"Slider activo";
+    //qDebug()<<"Slider is active";
     if(serial->isOpen()){
-        QByteArray data = QByteArray::number(value) + "\n"; //valor del slider = cadena
-        serial->write(data); //enviar valor al puerto serie
-        //qDebug()<<value; //mostrar valor en consola
-        sentValueLabel->setText(QString("Valor enviado: %1").arg(value));//mostrar valor en label
+        QByteArray data = QByteArray::number(value) + "\n"; //returns a byte-array representing the slider value as text.
+        serial->write(data); //write value to the serial port
+        //qDebug()<<value;
+        sentValueLabel->setText(QString("Sent value: %1").arg(value));//show slider value on a label
     }
 }
