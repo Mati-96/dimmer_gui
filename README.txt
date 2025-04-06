@@ -102,7 +102,7 @@ Developed by Matías Alvarez Franks
 
 Composer and software developer in training, focused on low-level audio programming, embedded systems, and digital signal processing.  
 GitHub: https://github.com/mati-alvarez  
-Email: matialvarezfranks [at] gmail [dot] com
+Email: matiasalvarezfranks [at] gmail [dot] com
 
 -----------------------------------------
 License
