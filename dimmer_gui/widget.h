@@ -16,11 +16,11 @@ public:
     ~Widget();
 
 private slots:
-    void onSliderValueChanged(int value); //enviar valor de slider
+    void onSliderValueChanged(int value); //send slider value
 
 private:
-    QSlider *sendSlider; //obj slider
-    QSerialPort *serial; //obj puerto serie
+    QSlider *sendSlider; //slider object
+    QSerialPort *serial; //serial port object
     QLabel *sentValueLabel;
 };
 #endif // WIDGET_H
